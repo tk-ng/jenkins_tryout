@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11'
+        }
+    }
     parameters {
         string(name: "TICKETS_NOT_ENTERED", defaultValue: "1", description: "Ticket without park admission")
         string(name: "TICKETS_ENTERED", defaultValue: "1", description: "Ticket with park admission")
@@ -23,6 +27,12 @@ pipeline {
                     source venv/bin/activate
                     behave --no-capture --no-capture-stderr --no-logcapture --show-timings
                 '''
+            }
+        }
+
+        stage ('Allure report') {
+            steps {
+                allure includeProperties: false, jdk: '', results:[[path:'reports/allure-results']]
             }
         }
     }
