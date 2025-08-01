@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.12-slim'
+        }
+    }
     parameters {
         string(name: "TICKETS_NOT_ENTERED", defaultValue: "1", description: "Ticket without park admission")
         string(name: "TICKETS_ENTERED", defaultValue: "1", description: "Ticket with park admission") 
